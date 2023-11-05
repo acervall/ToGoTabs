@@ -1,6 +1,5 @@
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState } from 'react'
 import { StyleSheet, SafeAreaView, Pressable, View, Text } from 'react-native' // Import Text
-import PropTypes from 'prop-types'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import Signup from '../components/Signup'
 import LoginComponent from '../components/LoginComponent'
@@ -16,7 +15,6 @@ const ProfileScreen = () => {
 
   const checkLoginStatus = async () => {
     const loginStatus = await AsyncStorage.getItem('loggedIn')
-    console.log('loginStatus', loginStatus)
     setLoggedIn(loginStatus)
   }
 
@@ -70,7 +68,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 })
-
-ProfileScreen.propTypes = {}
 
 export default ProfileScreen

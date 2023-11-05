@@ -30,7 +30,6 @@ export const AuthProvider = ({ children }) => {
   }
 
   const login = async (email, password) => {
-    console.log('email', email, 'password', password)
     try {
       const response = await fetch('/user/login', {
         method: 'POST',
@@ -42,7 +41,7 @@ export const AuthProvider = ({ children }) => {
 
       if (response.status === 200) {
         const data = await response.json()
-        console.log(data.length)
+        console.log(data)
         if (data.length === 1) {
           await AsyncStorage.setItem('loggedIn', true)
           await AsyncStorage.setItem('userData', JSON.stringify(data[0]))
@@ -69,7 +68,6 @@ export const AuthProvider = ({ children }) => {
       if (response.status === 201) {
         const data = await response.json()
         console.log('User information updated successfully')
-        console.log(data.user)
         await AsyncStorage.setItem('userData', JSON.stringify(data.user))
         return true
       } else {

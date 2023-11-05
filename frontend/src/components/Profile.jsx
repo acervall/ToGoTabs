@@ -1,15 +1,5 @@
 import { useEffect, useState, useRef } from 'react'
-import {
-  ImageBackground,
-  StyleSheet,
-  View,
-  Text,
-  Dimensions,
-  TextInput,
-  Pressable,
-  Keyboard,
-  SafeAreaView,
-} from 'react-native'
+import { StyleSheet, View, Text, TextInput, Pressable } from 'react-native'
 import PropTypes from 'prop-types'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useAuth } from '../context/AuthContext'
@@ -38,8 +28,6 @@ const Profile = ({ onLogoutSuccess }) => {
   }
 
   const handleSubmit = async () => {
-    console.log(user)
-
     const updateSuccess = await updateUser(user)
     if (updateSuccess) {
     }
@@ -51,12 +39,10 @@ const Profile = ({ onLogoutSuccess }) => {
 
   const checkUserStatus = async () => {
     const userData = await AsyncStorage.getItem('userData')
-    console.log('userData', userData)
 
     if (userData) {
       const parsedUserData = JSON.parse(userData)
       setUser(parsedUserData)
-      console.log(user)
     }
   }
 
