@@ -13,21 +13,15 @@ import {
 import PropTypes from 'prop-types'
 import { useAuth } from '../context/AuthContext'
 
-const Signup = ({ onLoginSuccess }) => {
-  const { signUp, login } = useAuth()
+const LoginComponent = ({ onLoginSuccess }) => {
+  const { login } = useAuth()
 
   const [formData, setFormData] = useState({
-    username: '',
-    first_name: '',
-    last_name: '',
     email: '',
     password: '',
   })
 
-  const ref_input2 = useRef()
-  const ref_input3 = useRef()
-  const ref_input4 = useRef()
-  const ref_input5 = useRef()
+  const ref_input = useRef()
 
   const handleChange = (field, value) => {
     setFormData({
@@ -37,69 +31,26 @@ const Signup = ({ onLoginSuccess }) => {
   }
 
   const handleSubmit = async () => {
-    console.log(formData)
-
-    const userData = {
-      username: formData.username,
-      first_name: formData.first_name,
-      last_name: formData.last_name,
-      email: formData.email,
-      password: formData.password,
-    }
-
-    const signupSuccess = await signUp(formData)
-    if (signupSuccess) {
-      const loginSuccess = await login(userData.email, userData.password)
-      if (loginSuccess) {
-        onLoginSuccess()
-      }
+    const loginSuccess = await login(formData.email, formData.password)
+    if (loginSuccess) {
+      onLoginSuccess()
     }
   }
 
   return (
     <View style={styles.container}>
-      <Text style={styles.heading}>Signup</Text>
+      <Text style={styles.heading}>Login</Text>
       <TextInput
-        style={styles.input}
-        placeholder="First Name"
-        onChangeText={(text) => handleChange('first_name', text)}
-        value={formData.first_name}
-        returnKeyType="next"
-        onSubmitEditing={() => ref_input2.current.focus()}
-      />
-
-      <TextInput
-        ref={ref_input2}
-        style={styles.input}
-        placeholder="Last Name"
-        onChangeText={(text) => handleChange('last_name', text)}
-        value={formData.last_name}
-        returnKeyType="next"
-        onSubmitEditing={() => ref_input3.current.focus()}
-      />
-
-      <TextInput
-        ref={ref_input3}
-        style={styles.input}
-        placeholder="Username"
-        onChangeText={(text) => handleChange('username', text)}
-        value={formData.username}
-        returnKeyType="next"
-        onSubmitEditing={() => ref_input4.current.focus()}
-      />
-
-      <TextInput
-        ref={ref_input4}
         style={styles.input}
         placeholder="Email"
         onChangeText={(text) => handleChange('email', text)}
         value={formData.email}
         returnKeyType="next"
-        onSubmitEditing={() => ref_input5.current.focus()}
+        onSubmitEditing={() => ref_input.current.focus()}
       />
 
       <TextInput
-        ref={ref_input5}
+        ref={ref_input}
         style={styles.input}
         placeholder="Password"
         onChangeText={(text) => handleChange('password', text)}
@@ -121,7 +72,7 @@ const Signup = ({ onLoginSuccess }) => {
   )
 }
 
-Signup.propTypes = {
+LoginComponent.propTypes = {
   onLoginSuccess: PropTypes.func,
 }
 
@@ -172,4 +123,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default Signup
+export default LoginComponent

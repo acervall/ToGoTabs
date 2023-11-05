@@ -59,9 +59,13 @@ router.put('/', async (_request, response) => {
       'UPDATE users SET username = $1, email = $2, password = $3, first_name = $4, last_name = $5 WHERE id = $6',
       [username, email, password, first_name, last_name, id]
     );
+    const { rows } = await client.query('SELECT * FROM users WHERE id = $1', [
+      id,
+    ]);
     response.status(201).json({
       success: true,
       message: 'User information updated',
+      user: rows[0],
     });
   } catch (error) {
     console.error(error);
