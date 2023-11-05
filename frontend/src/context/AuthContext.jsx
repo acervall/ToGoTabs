@@ -12,7 +12,7 @@ export const AuthProvider = ({ children }) => {
 
   const signUp = async (userData) => {
     try {
-      const response = await fetch('/user/users', {
+      const response = await fetch('/user/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
