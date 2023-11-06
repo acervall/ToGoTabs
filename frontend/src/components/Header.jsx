@@ -1,16 +1,35 @@
-import React from 'react'
-import { View, Text, Image, StyleSheet } from 'react-native'
-import { useAuth } from '../context/AuthContext'
+import { useEffect, useState } from 'react'
+import { View, Text, StyleSheet } from 'react-native'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const Header = () => {
-  const { loggedIn, user } = useAuth()
+  const [loggedIn, setLoggedIn] = useState(false)
+  const [user, setUser] = useState({
+    username: '',
+    first_name: '',
+    last_name: '',
+    email: '',
+    password: '',
+  })
+
+  useEffect(() => {
+    checkUserStatus()
+  }, [])
+
+  const checkUserStatus = async () => {
+    const userData = await AsyncStorage.getItem('userData')
+    const loginStatus = await AsyncStorage.getItem('loggedIn')
+    setLoggedIn(loginStatus)
+
+    if (userData) {
+      const parsedUserData = JSON.parse(userData)
+      setUser(parsedUserData)
+    }
+  }
 
   return (
     <View style={styles.header}>
-      <Text style={styles.welcomeText}>Hi, {loggedIn ? user : 'Welcome'}</Text>
-      {loggedIn && (
-        <Image source={{ uri: 'url_to_user_profile_image' }} style={styles.profileImage} />
-      )}
+      <Text style={styles.welcomeText}>{loggedIn ? `Hi, ${user.first_name}` : 'Welcome!'}</Text>
     </View>
   )
 }

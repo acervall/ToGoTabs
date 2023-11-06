@@ -1,22 +1,13 @@
 import { useEffect, useState, useRef } from 'react'
-import {
-  ImageBackground,
-  StyleSheet,
-  View,
-  Text,
-  Dimensions,
-  TextInput,
-  Pressable,
-  Keyboard,
-  SafeAreaView,
-} from 'react-native'
+import { StyleSheet, View, Text, TextInput, Pressable } from 'react-native'
 import PropTypes from 'prop-types'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useAuth } from '../context/AuthContext'
 
-const Signup = ({ onLoginSuccess }) => {
-  const { signUp, login } = useAuth()
+const Profile = ({ onLogoutSuccess }) => {
+  const { updateUser, logout, deleteUser } = useAuth()
 
-  const [formData, setFormData] = useState({
+  const [user, setUser] = useState({
     username: '',
     first_name: '',
     last_name: '',
@@ -30,40 +21,53 @@ const Signup = ({ onLoginSuccess }) => {
   const ref_input5 = useRef()
 
   const handleChange = (field, value) => {
-    setFormData({
-      ...formData,
+    setUser({
+      ...user,
       [field]: value,
     })
   }
 
   const handleSubmit = async () => {
-    console.log(formData)
-
-    const userData = {
-      username: formData.username,
-      first_name: formData.first_name,
-      last_name: formData.last_name,
-      email: formData.email,
-      password: formData.password,
+    const updateSuccess = await updateUser(user)
+    if (updateSuccess) {
     }
+  }
 
-    const signupSuccess = await signUp(formData)
-    if (signupSuccess) {
-      const loginSuccess = await login(userData.email, userData.password)
-      if (loginSuccess) {
-        onLoginSuccess()
-      }
+  useEffect(() => {
+    checkUserStatus()
+  }, [])
+
+  const checkUserStatus = async () => {
+    const userData = await AsyncStorage.getItem('userData')
+
+    if (userData) {
+      const parsedUserData = JSON.parse(userData)
+      setUser(parsedUserData)
+    }
+  }
+
+  const handleLogout = async () => {
+    const logoutSuccess = await logout()
+    if (logoutSuccess) {
+      onLogoutSuccess()
+    }
+  }
+
+  const handleDelete = async () => {
+    const deleteSuccess = await deleteUser(user.id)
+    if (deleteSuccess) {
+      onLogoutSuccess()
     }
   }
 
   return (
     <View style={styles.container}>
-      <Text style={styles.heading}>Signup</Text>
+      <Text style={styles.heading}>Edit user information</Text>
       <TextInput
         style={styles.input}
         placeholder="First Name"
         onChangeText={(text) => handleChange('first_name', text)}
-        value={formData.first_name}
+        value={user.first_name}
         returnKeyType="next"
         onSubmitEditing={() => ref_input2.current.focus()}
       />
@@ -73,7 +77,7 @@ const Signup = ({ onLoginSuccess }) => {
         style={styles.input}
         placeholder="Last Name"
         onChangeText={(text) => handleChange('last_name', text)}
-        value={formData.last_name}
+        value={user.last_name}
         returnKeyType="next"
         onSubmitEditing={() => ref_input3.current.focus()}
       />
@@ -83,7 +87,7 @@ const Signup = ({ onLoginSuccess }) => {
         style={styles.input}
         placeholder="Username"
         onChangeText={(text) => handleChange('username', text)}
-        value={formData.username}
+        value={user.username}
         returnKeyType="next"
         onSubmitEditing={() => ref_input4.current.focus()}
       />
@@ -93,7 +97,7 @@ const Signup = ({ onLoginSuccess }) => {
         style={styles.input}
         placeholder="Email"
         onChangeText={(text) => handleChange('email', text)}
-        value={formData.email}
+        value={user.email}
         returnKeyType="next"
         onSubmitEditing={() => ref_input5.current.focus()}
       />
@@ -103,7 +107,7 @@ const Signup = ({ onLoginSuccess }) => {
         style={styles.input}
         placeholder="Password"
         onChangeText={(text) => handleChange('password', text)}
-        value={formData.password}
+        value={user.password}
         secureTextEntry={true}
       />
       <Pressable
@@ -115,14 +119,47 @@ const Signup = ({ onLoginSuccess }) => {
         ]}
         onPress={handleSubmit}
       >
-        <Text style={styles.buttonText}>Submit</Text>
+        <Text style={styles.buttonText}>Edit information</Text>
+      </Pressable>
+      <Pressable
+        style={({ pressed }) => [
+          styles.button,
+          {
+            backgroundColor: pressed ? 'lightgray' : 'darkgray',
+          },
+        ]}
+        onPress={checkUserStatus}
+      >
+        <Text style={styles.buttonText}>Get user info</Text>
+      </Pressable>
+      <Pressable
+        style={({ pressed }) => [
+          styles.button,
+          {
+            backgroundColor: pressed ? 'lightgray' : 'darkgray',
+          },
+        ]}
+        onPress={handleLogout}
+      >
+        <Text style={styles.buttonText}>Logout</Text>
+      </Pressable>
+      <Pressable
+        style={({ pressed }) => [
+          styles.button,
+          {
+            backgroundColor: pressed ? 'lightgray' : 'darkgray',
+          },
+        ]}
+        onPress={handleDelete}
+      >
+        <Text style={styles.buttonText}>Delete account</Text>
       </Pressable>
     </View>
   )
 }
 
-Signup.propTypes = {
-  onLoginSuccess: PropTypes.func,
+Profile.propTypes = {
+  onLogoutSuccess: PropTypes.func,
 }
 
 const styles = StyleSheet.create({
@@ -161,6 +198,7 @@ const styles = StyleSheet.create({
     height: 40,
     backgroundColor: 'darkgray',
     marginHorizontal: 'auto',
+    marginVertical: 10,
     borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
@@ -172,4 +210,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default Signup
+export default Profile
