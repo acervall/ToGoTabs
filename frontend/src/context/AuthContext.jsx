@@ -1,5 +1,6 @@
-import React, { createContext, useContext, useState } from 'react'
+import React, { createContext, useContext } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import PropTypes from 'prop-types'
 
 const AuthContext = createContext()
 
@@ -41,7 +42,6 @@ export const AuthProvider = ({ children }) => {
 
       if (response.status === 200) {
         const data = await response.json()
-        console.log(data)
         if (data.length === 1) {
           await AsyncStorage.setItem('loggedIn', true)
           await AsyncStorage.setItem('userData', JSON.stringify(data[0]))
@@ -116,4 +116,8 @@ export const AuthProvider = ({ children }) => {
       {children}
     </AuthContext.Provider>
   )
+}
+
+AuthProvider.propTypes = {
+  children: PropTypes.object.isRequired,
 }

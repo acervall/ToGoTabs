@@ -1,15 +1,5 @@
-import { useEffect, useState, useRef } from 'react'
-import {
-  ImageBackground,
-  StyleSheet,
-  View,
-  Text,
-  Dimensions,
-  TextInput,
-  Pressable,
-  Keyboard,
-  SafeAreaView,
-} from 'react-native'
+import { useState, useRef } from 'react'
+import { StyleSheet, View, Text, TextInput, Pressable } from 'react-native'
 import PropTypes from 'prop-types'
 import { useAuth } from '../context/AuthContext'
 

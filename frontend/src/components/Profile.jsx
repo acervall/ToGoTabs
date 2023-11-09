@@ -27,10 +27,8 @@ const Profile = ({ onLogoutSuccess }) => {
     })
   }
 
-  const handleSubmit = async () => {
-    const updateSuccess = await updateUser(user)
-    if (updateSuccess) {
-    }
+  const handleSubmit = () => {
+    updateUser(user)
   }
 
   useEffect(() => {

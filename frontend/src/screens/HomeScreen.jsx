@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, StyleSheet, ScrollView } from 'react-native'
+import { View, Text, StyleSheet } from 'react-native'
 import Header from '../components/Header'
 import SearchBar from '../components/SearchBar'
 
@@ -7,7 +7,7 @@ const HomeScreen = () => {
   return (
     <View style={styles.container}>
       <Header />
-      <Text style={styles.heading}>Let's choose a travel route</Text>
+      <Text style={styles.heading}>Let&apos;s choose a travel route</Text>
       <SearchBar />
     </View>
   )
