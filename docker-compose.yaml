@@ -5,7 +5,7 @@ services:
     depends_on:
       - database
     environment:
-      - PGURI=postgres://postgres:secret@database/postgres
+      - PGURI=postgres://postgres:${POSTGRES_PASSWORD}@database/postgres
     ports:
       - "3000:3000"
   frontend:
@@ -16,7 +16,7 @@ services:
       - "80:80"
   database:
     environment:
-      - POSTGRES_PASSWORD=secret
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     image: postgres:13
     healthcheck:
       interval: 1s
