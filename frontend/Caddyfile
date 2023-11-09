@@ -1,4 +1,0 @@
-172.201.167.242 {
-    root * /var/www
-    encode gzip
-}

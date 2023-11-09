@@ -4,7 +4,10 @@ COPY package*.json ./
 RUN npm install
 COPY . .
 RUN npx expo export --platform web
-FROM caddy:2.4.0
-COPY --from=builder /app/dist /var/www
-COPY Caddyfile /etc/caddy/Caddyfile
+
+FROM nginx as production-stage
+WORKDIR /usr/share/nginx/html
+COPY --from=builder /app/dist/ .
+WORKDIR /etc/nginx/conf.d
+COPY ./nginx/default.conf .
 EXPOSE 80
