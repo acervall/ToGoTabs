@@ -15,4 +15,4 @@ VALUES
   (DEFAULT, 'jane_smith', 'Jane', 'Smith', 'jane.smith@example.com', 'securePassword456'),
   (DEFAULT, 'alice_jackson', 'Alice', 'Jackson', 'alice.jackson@example.com', 'mySecretPass'),
   (DEFAULT, 'bob_miller', 'Bob', 'Miller', 'bob.miller@example.com', 'p@ssw0rd'),
-  (DEFAULT, 'susan_wilson', 'Susan', 'Wilson', 'susan.wilson@example.com', 'strongP@ss!');
+  (DEFAULT, 'susan_wilson', 'Susan', 'Wilson', 'susan.wilson@example.com', 'strongPss!');
